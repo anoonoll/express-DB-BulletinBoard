@@ -3,6 +3,8 @@ var router = express.Router();
 
 var mysql = require('mysql');
 
+const { check, validationResult } = require('express-validator');
+
 var knex = require('knex')({
   client: 'mysql',
   connection: {
@@ -20,7 +22,7 @@ var User = Bookshelf.Model.extend({
   tableName: 'users'
 });
 
-router.get('/add', (req, red, next) => {
+router.get('/add', (req, res, next) => {
   var data = {
     title: 'Usera/Add',
     form:{name:'', password:'', comment:''},
@@ -30,11 +32,10 @@ router.get('/add', (req, red, next) => {
 });
  
 /* GET users listing. */
-router.post('/add', function(req, res, next) {
+router.post('/add', [check('name', 'NAMW は必ず入力して下さい。').notEmpty(),
+check('password', 'PASSWORD は必ず入力して下さい。').notEmpty()], function(req, res, next) {
   var request = req;
   var response = res;
-  req.check('name', 'NAMW は必ず入力して下さい。').notEmpty();
-  req.check('password', 'PASSWORD は必ず入力して下さい。').notEmpty();
   req.getValidationResult().then((result) => {
     if (!result.isEmpty()) {
       var content = '<ul class="error">';

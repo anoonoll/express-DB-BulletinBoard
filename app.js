@@ -5,11 +5,12 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var bodyParser = require('body-parser');//
 var session = require('express-session');//
-var validator = require('express-validator');//
+//var validator = require('express-validator');//
+
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var home = require('./routes/home');
+var home = require('./routes/home');//
 
 var app = express();
 
@@ -22,18 +23,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(validator());//
+//app.use(validator());//
 
 var session_opt = {
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
   cookie: {maxAge: 60 * 60 * 1000}
-};
-app.use(session(session_opt));
+};//
+app.use(session(session_opt));//
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', index);
+app.use('/users', users);
+app.use('/home', home);//
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

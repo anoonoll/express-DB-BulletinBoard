@@ -32,7 +32,8 @@ var Message = Bookshelf.Model.extend({
 /* GET home page. */
 router.get('/', function(req, res, next) {
   if (req.session.login == null){
-    res.redirect('/users');
+    console.log("/にアクセスしました。");
+    res.redirect('/users/');
   } else {
     res.redirect('/1');
   }

@@ -16,7 +16,6 @@ var knex = require('knex')({
 
 var Bookshelf = require('bookshelf')(knex);
 
-Bookshelf.plugin('pagination');
 
 var User = Bookshelf.Model.extend({
     tableName: 'users'
@@ -58,4 +57,4 @@ router.get('/:id/:page', (req, res ,next) => {
     });
 });
 
-module.exports = router;
+module.exports = routes;

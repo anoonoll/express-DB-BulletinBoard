@@ -23,7 +23,7 @@ var User = Bookshelf.Model.extend({
 });
 
 var Message = Bookshelf.Model.extend({
-  tableName: 'message',
+  tableName: 'messages',
   hasTimestamps: true,
   user: function() {
     return this.belongsTo(User);

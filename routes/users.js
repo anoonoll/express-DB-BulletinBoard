@@ -63,7 +63,7 @@ router.get('/', (req, res, next) => {
   var data = {
     title: 'Users/Login',
     form: {name:'', password:''},
-    content:'名前とパウワードを入力下さい。'
+    content:'名前とパスワードを入力下さい。'
   }
   res.render('users/login', data);
 });

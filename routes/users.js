@@ -24,7 +24,7 @@ var User = Bookshelf.Model.extend({
 
 router.get('/add', (req, res, next) => {
   var data = {
-    title: 'Usera/Add',
+    title: 'Users/Add',
     form:{name:'', password:'', comment:''},
     content:'※登録する名前・パスワード・コメントを入力ください。'
   }
@@ -32,46 +32,47 @@ router.get('/add', (req, res, next) => {
 });
  
 /* GET users listing. */
-router.post('/add', [check('name', 'NAMW は必ず入力して下さい。').notEmpty(),
-check('password', 'PASSWORD は必ず入力して下さい。').notEmpty()], function(req, res, next) {
-  var request = req;
-  var response = res;
-  req.getValidationResult().then((result) => {
-    if (!result.isEmpty()) {
-      var content = '<ul class="error">';
-      var result_arr = result.array();
-      for(var n in result_arr) {
-        content += '<li>' + result_arr[n].msg + '</li>'
-      }
-      content += '</ul>';
-      var data = {
-        title: 'Users/Add',
-        content:content,
-        form: req.body
-      }
-      response.render('users/add', data);
-    } else {
-      request.session.login = null;
-      new User(req.body).save().then((model) => {
-        response.redirect('/');
-      });
+router.post('/add', [
+  check('name', 'NAME は必ず入力して下さい。').notEmpty(),
+  check('password', 'PASSWORD は必ず入力して下さい。').notEmpty()
+], (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    var content = '<ul class="error">';
+    var errors_arr = errors.array();
+    for(var n in result_arr) {
+      content += '<li>' + errors_arr[n].msg + '</li>'
     }
-  });
+    content += '</ul>';
+    var data = {
+      title: 'Users/Add',
+      content:content,
+      form: req.body
+    }
+    res.render('users/add', data);
+  } else {
+    req.session.login = null;
+    new User(req.body).save().then((model) => {
+      res.redirect('/');
+    });
+  }
 });
 
 router.get('/', (req, res, next) => {
+  console.log("/users/にアクセスしました。");
   var data = {
     title: 'Users/Login',
     form: {name:'', password:''},
     content:'名前とパスワードを入力下さい。'
   }
-  res.render('users/login', data);
+  res.render('/users/login', data);
 });
 
-router.post('/', (rep, res, next) => {
+router.post('/', (req, res, next) => {
   var request = req;
   var response = res;
-  req.check('name', 'NAMW は必ず入力して下さい。').notEmpty();
+  req.check('name', 'NAME は必ず入力して下さい。').notEmpty();
   req.check('password', 'PASSWORD は必ず入力して下さい。').notEmpty();
   req.getValidationResult().then((result) => {
     if (!result.isEmpty()) {
@@ -86,7 +87,7 @@ router.post('/', (rep, res, next) => {
         content:content,
         form: req.body
       }
-      response.render('users/login', data);
+      response.render('/users/login', data);
     } else {
       var np = req.body.name;
       var pw = req.body.password;

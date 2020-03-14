@@ -16,11 +16,19 @@
                 <table>
                     <tr>
                         <th>NAME</th>
+                        <td><input type="text" name="name" value="<%= form.name %>"></td>
+                    </tr>
+                    <tr>
+                        <th>PASSWORD</th>
+                        <td><input type="password" name="password" value="<%= form.password %>"></td>
+                    </tr>
+                    <tr>
+                        <th></th>
                         <td><input type="submit" value="ログイン"></td>
                     </tr>
                 </table>
             </form>
-            <p><a href="/">&lt;&lt; Topへ戻る</a><a href="/users/add">アカウントの作成 &gt;&gt;</a></p>
+            <p><a href="/">&lt;&lt; Topへ戻る</a> | <a href="/users/add">アカウントの作成 &gt;&gt;</a></p>
         </div>
     </body>
 </html>

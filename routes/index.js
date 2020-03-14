@@ -38,7 +38,7 @@ router.get('/', function(req, res, next) {
   }
 });
 
-router.get('/:page', (req, red, next) => {
+router.get('/:page', (req, res, next) => {
   if (req.session.login == null) {
     res.redirect('/users');
     return;

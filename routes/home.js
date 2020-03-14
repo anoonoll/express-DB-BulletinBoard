@@ -57,4 +57,4 @@ router.get('/:id/:page', (req, res ,next) => {
     });
 });
 
-module.exports = routes;
+module.exports = router;

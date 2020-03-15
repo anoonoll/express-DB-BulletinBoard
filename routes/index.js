@@ -46,7 +46,10 @@ router.get('/:page', (req, res, next) => {
   var pg = req.params.page;
   pg *= 1;
   if (pg < 1){ pg = 1;}
-  new Message().orderBy('created_at', 'DESC').fetchPage({page:pg, pageSize:10, widhRelated: ['user']}).then((collection) => {
+  new Message()
+      .orderBy('created_at', 'DESC')
+      .fetchPage({page:pg, pageSize:10, withRelated: ['user']})
+      .then((collection) => {
     var data = {
       title: 'miniBoard',
       login:req.session.login,

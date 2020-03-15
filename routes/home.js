@@ -43,7 +43,7 @@ router.get('/:id/:page', (req, res ,next) => {
     var pg = req.params.page;
     pg *= 1;
     if (pg < 1){ pg = 1; }
-    new Message().orderBy('created_at', 'DESC').where('user_id' , '=', id).fetchPage({page:pg, pageSize:10, widhRelated: ['usser']}).then((collection) => {
+    new Message().orderBy('created_at', 'DESC').where('user_id' , '=', id).fetchPage({page:pg, pageSize:10, withRelated: ['user']}).then((collection) => {
         var data = {
             title: 'miniBoard',
             login: req.session.login,

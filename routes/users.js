@@ -74,15 +74,20 @@ router.get('/', (req, res, next) => {
   res.render('users/login', data);
 });
 
-router.post('/', (req, res, next) => {
-  var request = req;
-  var response = res;
-  req.check('name', 'NAME は必ず入力して下さい。').notEmpty();
-  req.check('password', 'PASSWORD は必ず入力して下さい。').notEmpty();
-  req.getValidationResult().then((result) => {
-    if (!result.isEmpty()) {
+router.post(
+  '/', 
+  [
+    check('name', 'NAME は必ず入力して下さい。').notEmpty(),
+    check('password', 'PASSWORD は必ず入力して下さい。').notEmpty()
+  ],
+  
+  (req, res) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
       var content = '<ul class="error">';
-      var result_arr = result.array();
+      var result_arr = errors.array();
       for(var n in result_arr) {
         content += '<li>' + result_arr[n].msg + '</li>'
       }
@@ -92,9 +97,9 @@ router.post('/', (req, res, next) => {
         content:content,
         form: req.body
       }
-      response.render('users/login', data);
+      res.render('users/login', data);
     } else {
-      var np = req.body.name;
+      var nm = req.body.name;
       var pw = req.body.password;
       User.query({where: {name:nm}, andWhere: {password: pw}}).fetch().then((model) => {
         if (model == null) {
@@ -103,19 +108,18 @@ router.post('/', (req, res, next) => {
             content: '<p class="error">名前またはパスワードが違います。</p>',
             form: req.body
           };
-          response.render('users/login', data);
+          res.render('users/login', data);
         } else {
-          request.session.login = model.attributes;
+          req.session.login = model.attributes;
           var data = {
             title: 'Users/Login',
             content:'<p>ログインしました<br>トップページに戻ってメセージを送信して下さい。</p>',
             form: req.body
           };
-          response.render('users/login', data);
+          res.render('users/login', data);
         }
       });
     }
   })
-});
 
 module.exports = router;

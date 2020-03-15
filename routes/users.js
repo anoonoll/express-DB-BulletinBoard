@@ -32,16 +32,21 @@ router.get('/add', (req, res, next) => {
 });
  
 /* GET users listing. */
-router.post('/add', [
-  check('name', 'NAME は必ず入力して下さい。').notEmpty(),
-  check('password', 'PASSWORD は必ず入力して下さい。').notEmpty()
-], (req, res) => {
+router.post(
+  '/add',
+
+   [
+      check('name', 'NAME は必ず入力して下さい。').notEmpty(),
+      check('password', 'PASSWORD は必ず入力して下さい。').notEmpty()
+   ], 
+
+   (req, res) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
     var content = '<ul class="error">';
     var errors_arr = errors.array();
-    for(var n in result_arr) {
+    for(var n in errors_arr) {
       content += '<li>' + errors_arr[n].msg + '</li>'
     }
     content += '</ul>';
@@ -66,7 +71,7 @@ router.get('/', (req, res, next) => {
     form: {name:'', password:''},
     content:'名前とパスワードを入力下さい。'
   }
-  res.render('/users/login', data);
+  res.render('users/login', data);
 });
 
 router.post('/', (req, res, next) => {
@@ -87,7 +92,7 @@ router.post('/', (req, res, next) => {
         content:content,
         form: req.body
       }
-      response.render('/users/login', data);
+      response.render('users/login', data);
     } else {
       var np = req.body.name;
       var pw = req.body.password;

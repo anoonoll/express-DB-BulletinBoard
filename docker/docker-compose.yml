@@ -7,10 +7,19 @@ services:
     restart: always
     container_name: express-local-db
     hostname: express-local-db
+    volumes:
+      - type: volume
+        source: sample-dbdata
+        target: /var/lib/mysql
+      - "./mysql/init:/docker-entrypoint-initdb.d"
     ports:
       - 3307:3306
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=my-nodeapp-db
+    networks:
+      - sample-net
+
 
   adminer:
     image: adminer
@@ -18,3 +27,14 @@ services:
     container_name: express-local-db-adminer
     ports:
       - 8081:8080
+    networks:
+      - sample-net
+
+
+networks:
+  sample-net:
+    external: true
+
+volumes:
+  sample-dbdata:
+    external: true

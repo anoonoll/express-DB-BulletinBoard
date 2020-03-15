@@ -9,7 +9,7 @@ var knex = require('knex')({
     host    : 'localhost',
     user    : 'root',
     password: '',
-    database: 'my-nodeapp-dvb',
+    database: 'my-nodeapp-db',
     charset : 'utf8'
   }
 })
@@ -30,9 +30,8 @@ var Message = Bookshelf.Model.extend({
 });
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
   if (req.session.login == null){
-    console.log("/にアクセスしました。");
     res.redirect('/users/');
   } else {
     res.redirect('/1');
@@ -65,7 +64,7 @@ router.post('/', (req, res, next) => {
     message: req.body.msg,
     user_id: req.session.login.id
   }
-  new Message(rec),save().then((model) => {
+  new Message(rec).save().then((model) => {
     res.redirect('/');
   });
 })

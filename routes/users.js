@@ -118,6 +118,13 @@ router.post(
           };
           res.render('users/login', data);
         }
+      }).catch((error) => {
+        var data = {
+          title: '再入力',
+          content: '<p class="error">名前またはパスワードが違います。</p>',
+          form: req.body
+        };
+        res.render('users/login', data);
       });
     }
   })
